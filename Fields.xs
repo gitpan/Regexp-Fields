@@ -98,8 +98,9 @@ rx_mg_get(pTHX_ SV *sv, MAGIC *mg)
 
 static int 
 rx_mg_free(pTHX_ SV *sv, MAGIC *mg) {
-    RX_DEBUG("free: SV=0x%"UVxf, sv);
     REGEXP *rx = INT2PTR(REGEXP*, SvIVX(mg->mg_obj));
+    RX_DEBUG("free: SV=0x%"UVxf, sv);
+
     rx->refcnt--;
     return 1;
 }
