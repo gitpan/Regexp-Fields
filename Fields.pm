@@ -2,11 +2,11 @@
 # Regexp/Fields.pm
 #
 # $Author: grazz $
-# $Date: 2003/08/09 13:20:35 $
+# $Date: 2003/10/19 18:16:34 $
 #
 
 package Regexp::Fields;
-our $VERSION = 0.041;
+our $VERSION = "0.042";
 
 use constant LOCALIZE_HH => 0x00020000;
 use XSLoader;
@@ -116,7 +116,7 @@ just like the corresponding values of C<%{&}>.  After a failed match
 attempt they'll always be C<undef>.
 
 This is not the case with C<%{&}> or the digit variables.  After a 
-failed match those, they might refer to a regex in some other part of
+failed match, those might refer to a regex in some other part of
 your program.  The lexical match variables work differently because
 they are bound once and forever to the regex where they were declared.
 
@@ -232,6 +232,10 @@ description of this warning.
 =head1 AUTHOR
 
 Steve Grazzini (grazz@pobox.com)
+
+=head1 THANKS
+
+Thanks to Andrew Sterling Hanenkamp.
 
 =head1 BUGS
 

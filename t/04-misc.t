@@ -2,7 +2,7 @@
 BEGIN {
     unshift @INC, qw(. ./t ../t);
     require "test.pl";
-    plan(tests => 1);
+    plan(tests => 3);
 }
 
 use Regexp::Fields;
@@ -14,3 +14,11 @@ SKIP: {
 }
 
 
+#
+# Reported by Sterling Hanenkamp -- referring to %& before
+# $& makes $& lose its magic.  [See perl #24237.]
+#
+
+"foo" =~ /(?<f> foo)/;
+is $&, $&{f};
+is $&, "foo";

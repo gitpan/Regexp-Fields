@@ -2,12 +2,12 @@
 # Regexp/Fields/tie.pm
 #
 # $Author: grazz $
-# $Date: 2003/08/09 13:20:02 $
+# $Date: 2003/10/19 18:16:34 $
 #
 
 package Regexp::Fields::tie;
 
-our $VERSION = 0.01;
+our $VERSION = "0.01";
 
 sub TIEHASH {
     my $class = shift;

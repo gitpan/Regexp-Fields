@@ -342,11 +342,10 @@ BOOT:
 {
     MY_CXT_INIT;
 #ifdef RE_FIELDS_MAGIC
-    GV *gv = gv_fetchpv("&", TRUE, SVt_PVHV);
-    HV *hv = GvHVn(gv);
-    MAGIC *mg = sv_magicext((SV*) hv, Nullsv, 'U', &rx_mg_vtbl, Nullch, 0);
+    /* force initialization of $& (blech) */
+    GV *gv = gv_fetchpv("&", TRUE, SVt_PV);
+    MAGIC *mg = sv_magicext((SV*) GvHVn(gv), Nullsv, 'U', &rx_mg_vtbl, Nullch, 0);
     mg->mg_flags |= MGf_COPY;
-
     MY_CXT.match_gv = gv;
 #endif
     MY_CXT.empty_hv = newHV();

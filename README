@@ -1,5 +1,5 @@
-Regexp::Fields version 0.3
-==========================
+Regexp::Fields version 0.42
+===========================
 
 Regexp::Fields adds the "(?<name> ...)" extended pattern to Perl's
 regular expression language.  This works like an ordinary pair of
@@ -46,8 +46,8 @@ regcomp.c, released under these terms:
     License or the Artistic License, as specified in the README file.
     ---------------------------------------------------------------------
 
-My alterations and the rest of this package are released under
-these:
+My (trivial) alterations and the rest of this package are released 
+under these:
 
     Copyright (c) 2003, Steve Grazzini
 
