@@ -2,7 +2,7 @@
 # re/names/t/test.pl
 #
 # $Author: grazz $
-# $Date: 2003/07/12 12:20:22 $
+# $Date: 2003/08/09 13:20:02 $
 #
 
 eval {

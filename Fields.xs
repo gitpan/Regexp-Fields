@@ -82,7 +82,7 @@ rx_destructor_now(pTHX_ rx_destructor_args *args)
 static int 
 rx_mg_get(pTHX_ SV *sv, MAGIC *mg) 
 {
-    REGEXP *rx = (REGEXP*) SvIVX(mg->mg_obj);
+    REGEXP *rx = INT2PTR(REGEXP*, SvIVX(mg->mg_obj));
     RX_DEBUG("get: SV=0x%"UVxf, sv);
 
     if (!RxCHECK(rx) || (RxHINTMY(rx) && !RxMATCHED(rx)))
@@ -99,7 +99,8 @@ rx_mg_get(pTHX_ SV *sv, MAGIC *mg)
 static int 
 rx_mg_free(pTHX_ SV *sv, MAGIC *mg) {
     RX_DEBUG("free: SV=0x%"UVxf, sv);
-    ((REGEXP*) SvIVX(SvMAGIC(sv)->mg_obj))->refcnt--;
+    REGEXP *rx = INT2PTR(REGEXP*, SvIVX(mg->mg_obj));
+    rx->refcnt--;
     return 1;
 }
 
@@ -154,8 +155,8 @@ rx_digit_var(pTHX_ I32 digit, REGEXP *rx)
 
 #ifdef RE_FIELDS_LEXICAL
     sv = newSV(0);
-    sv_magicext(sv, sv_2mortal(newSViv((IV) rx)), 
-		'\0', &rx_mg_elem_vtbl, buf, len);
+    sv_magicext(sv, sv_2mortal(newSViv((IV) PTR2IV(rx))), '\0',
+	        &rx_mg_elem_vtbl, buf, len);
     SvFLAGS(sv) |= (SVs_GMG|SVs_SMG);
     SvREADONLY_on(sv);
     rx->refcnt++;
@@ -246,7 +247,6 @@ rx_regexec_start(pTHX_ REGEXP *rx, I32 flags)
 
 void 
 rx_regexec_fail(pTHX_ REGEXP *rx, I32 flags) {
-    dMY_CXT;
     RX_TRACE(regexec_fail);
 }
 #endif /* RE_FIELDS_MAGIC */
@@ -265,9 +265,7 @@ rx_regexec_match(pTHX_ REGEXP *rx, I32 flags)
 void 
 rx_regcomp_start(pTHX_pREXC) 
 {
-    dMY_CXT;
     rx_reg_data *p;
-
     if (RExC_rx->data)
 	croak("rx->data unexpectedly populated");
 

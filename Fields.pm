@@ -2,11 +2,11 @@
 # Regexp/Fields.pm
 #
 # $Author: grazz $
-# $Date: 2003/07/12 12:20:22 $
+# $Date: 2003/08/09 13:20:35 $
 #
 
 package Regexp::Fields;
-our $VERSION = 0.04;
+our $VERSION = 0.041;
 
 use constant LOCALIZE_HH => 0x00020000;
 use XSLoader;
@@ -75,43 +75,50 @@ Perl's regular expression language.  This works like an ordinary pair
 of capturing parens, but after a match you can use C<$&{name}>
 instead of C<$1> (or whichever C<$N>) to get at the captured substring.
 
-The C<%{&}> hash is global, like all punctuation variables, and it's 
-dynamically scoped and bound to the "last match" just like C<$1> and
-friends.
+The C<%{&}> hash is global, like all punctuation variables.  Like C<$1>
+and friends, it's dynamically scoped and bound to the "last match".
 
 =head2 This looks familiar
 
-It's borrowed from the .NET regex library.  
+The syntax is borrowed from the .NET regex library.
 
-=head2 But not too familiar
+Differences from .NET include the following:
 
-Differences include the following:
+=over 4
+
+=item
 
 Regexp::Fields ignores whitespace between the field name and the
 subpattern.  To match leading whitespace, you'll need to use backslash
 or a character class.
 
-  /(?<ws> [\w]*)/;
+  /(?<space> [ ])/;   # matches one space
+
+=item
 
 The digit variables aren't reordered.
 
   "12" =~ /(?<one>1)(2)/;    # $2 is "2"
 
-And Regexp::Fields doesn't support named backreferences (which are
-on the TODO list) or field names in conditional tests (which aren't).
+=item
+
+Regexp::Fields doesn't support named backreferences (which are on the
+TODO list) or field names in conditional tests (which aren't).
+
+=back
 
 =head2 Lexical variables and the C<my> pragma
 
 When a regex is compiled with C<use Regexp::Fields 'my'> in effect,
-a lexical variable for each field is implicitly declared.  After a
-successful match the variables will be set to the captured substrings,
-just like the corresponding values of C<%{&}>, but after a failed 
-match attempt they'll always be C<undef>.
+a lexical variable for each field will be implicitly declared.  After
+a successful match the variables will be set to the captured substrings,
+just like the corresponding values of C<%{&}>.  After a failed match
+attempt they'll always be C<undef>.
 
-This is not the case with C<%{&}> or the digit variables, which may
-refer to a matched regex in some other part of your program.  It 
-works because the lexical variables are bound once and forever to
-the regex where they were declared.
+This is not the case with C<%{&}> or the digit variables.  After a 
+failed match those, they might refer to a regex in some other part of
+your program.  The lexical match variables work differently because
+they are bound once and forever to the regex where they were declared.
 
   use Regexp::Fields qw(my);
 
@@ -240,18 +247,18 @@ The 'my' pragma doesn't work in 5.6.1.
 
 =item 
 
-You need to manually reinstall the modified regex engine every time
-you create a new thread.
+You need to reinstall the modified regex engine every time you create
+a new thread.
 
 =item
 
-There's a scoping problem when /g is used with /m or /s
+There's a scoping problem when /g is used with /m or /s.
 
 =back
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2003, Steve Grazzini.
+Copyright (c) 2003, Steve Grazzini.  All rights reserved.
 
 This module is free software; you can copy, modify and/or redistribute
 it under the same terms as Perl itself.

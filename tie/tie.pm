@@ -1,8 +1,8 @@
 #
 # Regexp/Fields/tie.pm
 #
-# $Author: $
-# $Date: $
+# $Author: grazz $
+# $Date: 2003/08/09 13:20:02 $
 #
 
 package Regexp::Fields::tie;
