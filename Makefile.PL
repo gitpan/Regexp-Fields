@@ -2,7 +2,7 @@
 # Makefile.PL
 #
 # $Author: grazz $
-# $Date: 2003/10/23 18:34:05 $
+# $Date: 2003/11/03 22:51:29 $
 #
 
 use ExtUtils::MakeMaker;
@@ -40,7 +40,7 @@ WriteMakefile(
     DIR             => $dirs,
 
     clean  => { FILES => "rx_reg{comp,exec}.c" },
-    test   => { TESTS => $tests },
+    test   => { TESTS => join " ", glob $tests },
 
     @NO_META
 );

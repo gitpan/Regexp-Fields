@@ -6,7 +6,7 @@
 #
 
 package Regexp::Fields;
-our $VERSION = '0.045';
+our $VERSION = '0.046';
 
 use constant LOCALIZE_HH => 0x00020000;
 use XSLoader;
