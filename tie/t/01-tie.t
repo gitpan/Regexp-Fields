@@ -1,7 +1,7 @@
 
 BEGIN { 
-    unshift @INC, qw(. ./t ../t);
-    require "test.pl";
+    use FindBin qw($Bin);
+    require "$Bin/../../t/test.pl";
     plan(tests => 2);
 }
 

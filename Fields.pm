@@ -2,11 +2,11 @@
 # Regexp/Fields.pm
 #
 # $Author: grazz $
-# $Date: 2003/10/19 18:16:34 $
+# $Date: 2003/10/19 23:09:14 $
 #
 
 package Regexp::Fields;
-our $VERSION = "0.042";
+our $VERSION = '0.043';
 
 use constant LOCALIZE_HH => 0x00020000;
 use XSLoader;

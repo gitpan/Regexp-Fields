@@ -1,4 +1,4 @@
-Regexp::Fields version 0.42
+Regexp::Fields version 0.43
 ===========================
 
 Regexp::Fields adds the "(?<name> ...)" extended pattern to Perl's
