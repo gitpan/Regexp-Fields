@@ -39,18 +39,6 @@ typedef struct {
 #define RxHINTMY(rx)   (RxDATA(rx)->flags & RXh_MY)
 #define RxMATCHED(rx)  (RxDATA(rx)->flags & RXf_MATCHED)
 
-#ifdef RX_DEBUGGING
-# define RX_DEBUG(p,v...)   warn("[RC] "p, ##v);
-# define RX_TRACE(where)    warn("[RC] "#where);
-# define RX_DUMP_SV(sv)     Perl_sv_dump(aTHX_ sv); 
-# define RX_DUMP_MG(mg)     Perl_magic_dump(aTHX_ mg); 
-#else
-# define RX_DEBUG(...)
-# define RX_TRACE(...)
-# define RX_DUMP_SV(sv)
-# define RX_DUMP_MG(mg)
-#endif
-
 #ifdef RE_FIELDS_MAGIC
 # define SSPUSHANY(x)	(PL_savestack[PL_savestack_ix++] = x)
 # define SSPOPANY	(PL_savestack[--PL_savestack_ix])

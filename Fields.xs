@@ -37,7 +37,6 @@ static void
 rx_destructor_later(pTHX_ ANY *p)
 {
     dMY_CXT;
-    RX_TRACE(rx_destructor_later);
 
     SSPUSHANY(p[3]);
     SSPUSHANY(p[2]);
@@ -56,8 +55,6 @@ typedef struct {
 static void
 rx_destructor_now(pTHX_ rx_destructor_args *args)
 {
-    RX_TRACE(rx_destructor_now);
-
     if (RxCHECK(args->rx) && 
 	RxDATA(args->rx)->flags & RXf_MATCHED)
     {
@@ -83,7 +80,6 @@ static int
 rx_mg_get(pTHX_ SV *sv, MAGIC *mg) 
 {
     REGEXP *rx = INT2PTR(REGEXP*, SvIVX(mg->mg_obj));
-    RX_DEBUG("get: SV=0x%"UVxf, sv);
 
     if (!RxCHECK(rx) || (RxHINTMY(rx) && !RxMATCHED(rx)))
 	sv_setsv(sv, &PL_sv_undef);
@@ -99,7 +95,6 @@ rx_mg_get(pTHX_ SV *sv, MAGIC *mg)
 static int 
 rx_mg_free(pTHX_ SV *sv, MAGIC *mg) {
     REGEXP *rx = INT2PTR(REGEXP*, SvIVX(mg->mg_obj));
-    RX_DEBUG("free: SV=0x%"UVxf, sv);
 
     rx->refcnt--;
     return 1;
@@ -125,7 +120,6 @@ rx_install_padsv(pTHX_ const char *name, I32 len, SV *sv)
 
     strncpy(buf+1, name, len);
     buf[len+1] = '\0';
-    RX_DEBUG("rx_install_padsv ${%.*s}\n", len, buf);
 
 #ifdef RX_PAD_ADD_NAME
     pad_check_dup(buf, FALSE, Nullhv);
@@ -152,7 +146,6 @@ rx_digit_var(pTHX_ I32 digit, REGEXP *rx)
     char buf[16];
     STRLEN len = sprintf(buf, "%"UVuf, digit);
     SV *sv;
-    RX_DEBUG("rx_digit_var ${%s}\n", buf);
 
 #ifdef RE_FIELDS_LEXICAL
     sv = newSV(0);
@@ -196,7 +189,6 @@ rx_regfree(pTHX_ REGEXP *rx)
 	    croak("[Regexp::Fields] panic: rx_regfree");
 	if (!data->names) {
 	    if (rx->refcnt == 1) {
-		RX_DEBUG("regfree [empty] REGEXP=0x%"UVxf, rx);
 		rx->data->what[0] = 'f';
 	    }
 	    return;
@@ -206,9 +198,7 @@ rx_regfree(pTHX_ REGEXP *rx)
 #else
 	if (rx->refcnt == 1) {
 #endif
-	    RX_DEBUG("regfree [clear:%d] REGEXP=0x%"UVxf, HvKEYS(data->names), rx);
 	    SvREFCNT_dec((SV*) data->names);
-	    RX_DEBUG("   ===> [refcnt:%d] REGEXP=0x%"UVxf"\n", rx->refcnt, rx);
 	    rx->data->what[0] = 'f';
 	}
     }
@@ -218,8 +208,6 @@ rx_regfree(pTHX_ REGEXP *rx)
 void 
 rx_regexec_start(pTHX_ REGEXP *rx, I32 flags) 
 {
-    RX_TRACE(regexec_start);
-
     if (RxCHECK(rx) && !(flags & REXEC_NOT_FIRST)) {
 	dMY_CXT;
 	rx_destructor_args *args;
@@ -248,14 +236,13 @@ rx_regexec_start(pTHX_ REGEXP *rx, I32 flags)
 
 void 
 rx_regexec_fail(pTHX_ REGEXP *rx, I32 flags) {
-    RX_TRACE(regexec_fail);
+    ; /* empty */
 }
 #endif /* RE_FIELDS_MAGIC */
 
 void 
 rx_regexec_match(pTHX_ REGEXP *rx, I32 flags) 
 {
-    RX_DEBUG("regexec_match 0x%"UVxf, rx);
 
 #ifdef RE_FIELDS_LEXICAL
     if (RxCHECK(rx))
@@ -270,7 +257,6 @@ rx_regcomp_start(pTHX_pREXC)
     if (RExC_rx->data)
 	croak("rx->data unexpectedly populated");
 
-    RX_DEBUG("regcomp_start: 0x%"UVxf, RExC_rx);
     Newz(1299, p, 1, rx_reg_data);
 
     /* from S_add_reg_data: */
@@ -292,7 +278,6 @@ rx_regcomp_parse(pTHX_ pREXC_ const char *name, I32 len)
     SV *sv;
     HV *hv;
 
-    RX_DEBUG("regcomp_parse 0x%"UVxf, RExC_rx);
     hv = rx_get_names(aTHX_ RExC_rx, TRUE);
 
     if (hv_exists(hv, name, len)) {
@@ -312,8 +297,6 @@ rx_regcomp_parse(pTHX_ pREXC_ const char *name, I32 len)
 
 void rx_uninstall(pTHX)
 {
-    RX_TRACE(uninstall);
-
     PL_regexecp = Perl_regexec_flags;
     PL_regcompp = Perl_pregcomp;
     PL_regint_start = Perl_re_intuit_start;
@@ -324,8 +307,6 @@ void rx_uninstall(pTHX)
 
 void rx_install(pTHX) 
 {
-    RX_TRACE(install);
-
     PL_regexecp = my_regexec;
     PL_regcompp = my_regcomp;
     PL_regint_start = my_re_intuit_start;

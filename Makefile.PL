@@ -2,7 +2,7 @@
 # Makefile.PL
 #
 # $Author: grazz $
-# $Date: 2003/08/09 13:20:01 $
+# $Date: 2003/10/23 18:34:05 $
 #
 
 use ExtUtils::MakeMaker;
@@ -32,6 +32,7 @@ my $o = '$(OBJ_EXT)';
 WriteMakefile(
     NAME            => 'Regexp::Fields',
     VERSION_FROM    => 'Fields.pm',
+    ABSTRACT_FROM   => 'Fields.pm',
     AUTHOR          => 'Steve Grazzini <grazz@pobox.com>',
     OBJECT          => "rx_regcomp${o} rx_regexec${o} Fields${o}",
     INC             => '-I./include',
